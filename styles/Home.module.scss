@@ -1,0 +1,114 @@
+.homeWrap {
+  width: 1100px;
+  margin: 0 auto;
+}
+
+.tagBox {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .tagItem, .tagItemActive {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    column-gap: 10px;
+    border-radius: 20px;
+    border: 1px solid rgb(224, 224, 230);
+    color: #333333;
+
+    .tagItemIcon {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .tagItemActive {
+    border: 1px solid rgba(234, 68, 77, 0.3);
+    background-color: rgba(234, 68, 77, 0.1);
+    color: #ea444d;
+  }
+}
+
+.newsList {
+  margin-top: 20px;
+  border: 1px solid rgb(239, 239, 245);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  .newsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .newsIcon {
+      height: 50px;
+      width: 50px;
+    }
+
+    .newsTotal {
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+
+  .newsItem {
+    padding: 12px 20px;
+    border-radius: 3px;
+    display: flex;
+    border-bottom: 1px solid rgb(239, 239, 245);
+
+    .itemCount {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background-color: rgb(239, 239, 245);
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      margin-right: 20px;
+    }
+
+    .itemContent {
+      font-size: 12px;
+      .itemContentTitle {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+
+
+    &:hover {
+      background-color: rgb(243, 243, 245);
+    }
+
+    &:nth-child(1) .itemCount {
+      background-color: #ea444d;
+      color: #ffffff;
+    }
+    &:nth-child(2) .itemCount {
+      background-color: #ed702d;
+      color: #ffffff;
+    }
+    &:nth-child(3) .itemCount {
+      background-color: #eead3f;
+      color: #ffffff;
+    }
+
+
+  }
+
+}
