@@ -5,16 +5,29 @@ import { BrowseData } from "@/utils/rsshub";
 import Image from "next/image";
 import Link from "next/link";
 import styles from '@/styles/Home.module.scss'
-import RSSHub from "rsshub";
-// const RSSHub = require("rsshub");
-// import { Button } from "antd";
+import { useEffect, useState } from "react";
+import { debounce } from "throttle-debounce";
 
 interface IProps {
-  data: IRssResult;
+  // newsData: IRssResult;
   platform: EPlatform;
 }
 
-const Home: NextPage<IProps> = ({ data, platform}) => {
+const Home: NextPage<IProps> = ({ platform}) => {
+
+  const [newsData, setNewsData] = useState({
+    updated: "-",
+    title: ""
+  } as IRssResult);
+  useEffect(() => {
+    getNewsData();
+  }, [platform]); // eslint-disable-line
+
+  const getNewsData = debounce(300, async () => {
+    const response = await fetch(`/api/platform/${platform}`)
+    const data = await response.json();
+    setNewsData(data as IRssResult);
+  }, { atBegin: true });
 
   return (
     <div className={styles.homeWrap}>
@@ -35,8 +48,7 @@ const Home: NextPage<IProps> = ({ data, platform}) => {
         }) }
       </div>
 
-      {/*<Button>1212121212</Button>*/}
-      {data.item && data.item.length > 0 ? <div className={styles.newsList}>
+      {newsData.item && newsData.item.length > 0 ? <div className={styles.newsList}>
         <div className={styles.newsHeader}>
           <Image
             className={styles.newsIcon}
@@ -45,12 +57,12 @@ const Home: NextPage<IProps> = ({ data, platform}) => {
             src={`/images/${platform}.png`}
             alt={''}
           />
-          <h1>{data.title}</h1>
+          <h1>🔥🔥🔥{newsData.title}</h1>
           <div className={styles.newsTotal}>
-            共{data.item.length || 0}条 <br/>更新时间：{ new Date(data.updated).toLocaleString() }
+            共{newsData.item.length || 0}条 <br/>更新时间：{ newsData.updated }
           </div>
         </div>
-        { data.item.map((val, index) => {
+        { newsData.item.map((val, index) => {
           return <Link href={val.link} key={val.link} className={styles.newsItem}>
             <div className={styles.itemCount}>{ index + 1 }</div>
             <div className={styles.itemContent}>
@@ -69,11 +81,13 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }): Promise<GetServerSidePropsResult<IProps>> => {
   const platform = (query?.platform) as EPlatform || EPlatform.百度;
+  // const response = await fetch(`http://localhost:3000/api/${platform}`)
+  // const data = response.json() as IRssResult;
   // const RSSHub = require("rsshub");
-  const data = await RSSHub.request(`/zyw/hot/${platform}`);
+  // const data = await RSSHub.request(`/zyw/hot/${platform}`);
+
   return {
     props: {
-      data,
       platform,
     }
   }

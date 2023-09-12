@@ -9,17 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/openai": "^1.0.0-beta.5",
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "antd-mobile": "^5.32.0",
+    "axios": "^1.5.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
     "nprogress": "^0.2.0",
+    "openai": "^4.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "rsshub": "^1.0.0-master.dea94ae",
+    "rsshub": "^1.0.0-master.63e0e6d",
     "sass": "^1.63.6",
     "throttle-debounce": "^5.0.0",
     "typescript": "5.2.2"
