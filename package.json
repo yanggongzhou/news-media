@@ -13,6 +13,7 @@
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "antd": "^5.9.0",
     "antd-mobile": "^5.32.0",
     "axios": "^1.5.0",
     "eslint": "8.49.0",

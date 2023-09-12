@@ -7,6 +7,7 @@ import Link from "next/link";
 import styles from '@/styles/Home.module.scss'
 import { useEffect, useState } from "react";
 import { debounce } from "throttle-debounce";
+import { Spin } from "antd";
 
 interface IProps {
   // newsData: IRssResult;
@@ -14,19 +15,23 @@ interface IProps {
 }
 
 const Home: NextPage<IProps> = ({ platform}) => {
-
+  const [spinning, setSpinning] = useState(true);
   const [newsData, setNewsData] = useState({
     updated: "-",
-    title: ""
+    title: "",
+    item: [],
   } as IRssResult);
   useEffect(() => {
     getNewsData();
   }, [platform]); // eslint-disable-line
 
   const getNewsData = debounce(300, async () => {
+    setSpinning(true);
+    setNewsData(prevState => ({ ...prevState, updated: '-', title: "" }));
     const response = await fetch(`/api/platform/${platform}`)
     const data = await response.json();
     setNewsData(data as IRssResult);
+    setSpinning(false);
   }, { atBegin: true });
 
   return (
@@ -47,8 +52,7 @@ const Home: NextPage<IProps> = ({ platform}) => {
           </Link>
         }) }
       </div>
-
-      {newsData.item && newsData.item.length > 0 ? <div className={styles.newsList}>
+      <div className={styles.newsList}>
         <div className={styles.newsHeader}>
           <Image
             className={styles.newsIcon}
@@ -57,22 +61,24 @@ const Home: NextPage<IProps> = ({ platform}) => {
             src={`/images/${platform}.png`}
             alt={''}
           />
-          <h1>🔥🔥🔥{newsData.title}</h1>
+          <h1>🔥{newsData.title}🔥</h1>
           <div className={styles.newsTotal}>
             共{newsData.item.length || 0}条 <br/>更新时间：{ newsData.updated }
           </div>
         </div>
-        { newsData.item.map((val, index) => {
-          return <Link href={val.link} key={val.link} className={styles.newsItem}>
-            <div className={styles.itemCount}>{ index + 1 }</div>
-            <div className={styles.itemContent}>
-              <div className={styles.itemContentTitle}>{val.title}</div>
-              {val.description ? <p>{val.description}</p> : null}
-            </div>
+        <Spin size={"large"} spinning={spinning} tip="加载中..." style={{ minHeight: 500 }}>
+          { newsData.item.map((val, index) => {
+            return <Link href={val.link} key={val.link} className={styles.newsItem}>
+              <div className={styles.itemCount}>{ index + 1 }</div>
+              <div className={styles.itemContent}>
+                <div className={styles.itemContentTitle}>{val.title}</div>
+                {val.description ? <p>{val.description}</p> : null}
+              </div>
 
-          </Link>
-        }) }
-      </div> : null}
+            </Link>
+          }) }
+        </Spin>
+      </div>
     </div>
   )
 }
