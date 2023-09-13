@@ -27,5 +27,6 @@ export interface IRssResultItem {
   link: string;
   title: string;
   description?: string;
+  text?: string;
 }
 
